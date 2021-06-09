@@ -32,6 +32,14 @@ public class GameData
 
     public string rivalNick = "";
 
+    public int rivalRating = 0;
+
+    public int rivalRD = 0;
+
+    public int myRating = 0;
+
+    public int myRD = 0;
+
     public string playerChar;
 
     public string rivalChar;
@@ -100,6 +108,10 @@ public class PairSearch : ServerMessage
     public bool finished = false;
     public int rivalID = -1;
     public string rivalNick = "";
+    public int bestRivalRating = 1500;
+    public int bestRivalRD = 0;
+    public int myRating = 1500;
+    public int myRD = 0;
 }
 
 [Serializable]
