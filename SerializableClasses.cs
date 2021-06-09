@@ -110,6 +110,21 @@ public class GameEndMessage : ServerMessage
 }
 
 [Serializable]
+public class UserDataSmall : ServerMessage
+{
+    public int id;
+    public string nick;
+    public string email;
+    public int rating;
+    public int RD;
+    public string creation;
+    public int wins;
+    public int draws;
+    public int losses;
+    public int totalGames;
+}
+
+[Serializable]
 public class ServerMessage
 {
     public int code = 0;

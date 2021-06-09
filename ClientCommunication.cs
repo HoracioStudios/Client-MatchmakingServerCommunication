@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -548,57 +547,55 @@ public class ClientCommunication
         }
     }
 
-    /*
-     * 
-    // Throw and exception if can't delete the acc
-    public static void DeleteAccount(string password, string username = null, string email = null)
+    public static ServerMessage GetInfo(int id)
     {
-        string url = "http://" + ip + ":" + puerto + messages[(int)MESSAGE.DELETEACC];
-        User user = new User();
-        user.nick = username;
-        user.email = email;
-        user.password = password;
-        string json = JsonConvert.SerializeObject(user);
-        Post(json, url, out code_, out message_);
+        string url = URL_GAME + "/accounts/by-id/" + id;
 
-        if (code_ != 200)
-            throw new RestResponseException(message_, code_);
+        int code;
+
+        try
+        {
+            var reply = Get(url, out code);
+            //var reply = Post(json, url, out code, out message);
+
+            if (code != 200)
+            {
+                REST_Error message = new REST_Error();
+
+                if (code < 0)
+                    message.message = "Error de socket, no se puede abrir una conexión";
+                else
+                {
+                    try
+                    {
+                        message = JsonConvert.DeserializeObject<REST_Error>(reply);
+                    }
+                    catch (Exception e)
+                    {
+                        message.message = reply;
+                    }
+                }
+
+                message.code = code;
+
+                return message;
+            }
+            else
+            {
+                UserDataSmall message = new UserDataSmall();
+
+                message = JsonConvert.DeserializeObject<UserDataSmall>(reply);
+
+                message.code = code;
+
+                return message;
+            }
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
-
-    public static int[] OnlineUsers()
-    {
-        string url = "http://" + ip + ":" + puerto + messages[(int)MESSAGE.ONLINEUSERS];
-
-        StatusInfo statusInfo = JsonConvert.DeserializeObject<StatusInfo>(Get(url, out code_, out message_));
-        if (code_ == 200)
-            return statusInfo.onlineUsers;
-
-        Debug.Log("Error code " + code_.ToString() + ": " + message_);
-        throw new RestResponseException(message_, code_);
-    }
-
-    public static Data GetInfo(int id, string nick)
-    {
-        string url = "http://" + ip + ":" + puerto + messages[(int)MESSAGE.GETINFO] + id.ToString() + "&playerNick=" + nick;
-        Response response = JsonConvert.DeserializeObject<Response>(Get(url, out code_, out message_));
-
-        if(code_ == 200)
-            return response.data;
-
-        throw new RestResponseException(message_, code_);
-    }
-
-    public static string GetVersion()
-    {
-        string url = "http://" + ip + ":" + puerto + messages[(int)MESSAGE.VERSION];
-        string version = Get(url, out code_, out message_);
-
-        if(code_ == 200)
-            return version;
-
-        throw new RestResponseException(message_, code_);
-    }
-    */
 
     private static string HandleRequest(HttpWebRequest request, out int code)
     {
