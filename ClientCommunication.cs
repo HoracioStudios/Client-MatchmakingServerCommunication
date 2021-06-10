@@ -622,7 +622,7 @@ public class ClientCommunication
             {
                 if (response == null)
                 {
-                    code = -1;
+                    code = 503;
                     return "";
                 }
 
@@ -641,7 +641,7 @@ public class ClientCommunication
         }
         catch (SocketException e)
         {
-            code = -1;
+            code = 503;
             return e.Message;
         }
     }
@@ -655,7 +655,7 @@ public class ClientCommunication
 
         if (useAuth) request.Headers.Add("Authorization", "Bearer " + authToken);
 
-        code = -1;
+        code = 503;
 
         try
         {
@@ -683,7 +683,7 @@ public class ClientCommunication
 
         if (useAuth) request.Headers.Add("Authorization", "Bearer " + authToken);
 
-        code = -1;
+        code = 503;
 
         return HandleRequest(request, out code);
     }
@@ -697,7 +697,7 @@ public class ClientCommunication
 
         if (useAuth) request.Headers.Add("Authorization", "Bearer " + authToken);
 
-        code = -1;
+        code = 503;
 
         try
         {
