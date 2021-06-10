@@ -6,14 +6,23 @@ using Newtonsoft.Json;
 
 public class ClientCommunication
 {
-    const string IP = "localhost"; // IP donde esta alojado el servidor de matchmaking
-    const string PORT = "25565";
+    static string IP = "localhost"; // IP donde esta alojado el servidor de matchmaking
+    static string PORT = "25565";
+    static string URL = "http://" + IP + ":" + PORT;
+    static string URL_GAME = "http://" + IP + ":" + PORT_GAME_SERVER;
+
     const string PORT_GAME_SERVER = "25564";
-    const string URL = "http://" + IP + ":" + PORT;
-    const string URL_GAME = "http://" + IP + ":" + PORT_GAME_SERVER;
 
     static string authToken = "";
     static string refreshToken = "";
+
+    public static void Init(string IP_, string PORT_)
+    {
+        IP = IP_;
+        PORT = PORT_;
+        URL = "http://" + IP + ":" + PORT;
+        URL_GAME = "http://" + IP + ":" + PORT_GAME_SERVER;
+    }
 
     //Devuelve el id del usuario
     public static ServerMessage LogIn(string password, string username)
