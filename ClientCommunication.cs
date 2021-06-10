@@ -559,7 +559,7 @@ public class ClientCommunication
 
     public static ServerMessage GetInfo(int id)
     {
-        string url = URL_GAME + "/accounts/by-id/" + id;
+        string url = URL + "/accounts/by-id/" + id;
 
         int code;
 
