@@ -32,13 +32,13 @@ public class GameData
 
     public string rivalNick = "";
 
-    public int rivalRating = 0;
+    public float rivalRating = 0;
 
-    public int rivalRD = 0;
+    public float rivalRD = 0;
 
-    public int myRating = 0;
+    public float myRating = 0;
 
-    public int myRD = 0;
+    public float myRD = 0;
 
     public string playerChar;
 
@@ -108,10 +108,10 @@ public class PairSearch : ServerMessage
     public bool finished = false;
     public int rivalID = -1;
     public string rivalNick = "";
-    public int bestRivalRating = 1500;
-    public int bestRivalRD = 0;
-    public int myRating = 1500;
-    public int myRD = 0;
+    public float bestRivalRating = 1500;
+    public float bestRivalRD = 0;
+    public float myRating = 1500;
+    public float myRD = 0;
 }
 
 [Serializable]
@@ -127,8 +127,8 @@ public class UserDataSmall : ServerMessage
     public int id;
     public string nick;
     public string email;
-    public int rating;
-    public int RD;
+    public float rating;
+    public float RD;
     public string creation;
     public int wins;
     public int draws;
