@@ -25,13 +25,14 @@ public class ClientCommunication
     }
 
     //Devuelve el id del usuario
-    public static ServerMessage LogIn(string password, string username)
+    public static ServerMessage LogIn(string password, string username, string version)
     {
         string url = URL + "/accounts/sessions";
 
         LoginInfo user = new LoginInfo();
         user.nick = username;
         user.password = password;
+        user.version = version;
         string json = JsonConvert.SerializeObject(user);
 
         int code;

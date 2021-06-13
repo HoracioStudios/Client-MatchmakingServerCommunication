@@ -10,6 +10,7 @@ public class LoginInfo
     public string nick;
     public string email;
     public string password;
+    public string version;
 }
 
 [Serializable]
