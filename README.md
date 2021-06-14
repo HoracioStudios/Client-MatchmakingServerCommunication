@@ -4,7 +4,7 @@ ___
 Repositorio creado para la implementación de una librería dinámica con la que poder realizar una comunicación entre un videojuego cualquiera y el [sistema de matchmaking] creado por HoracioStudios.
 
 >### Uso de la librería
->Es importante hacer llamar a la función Init donde se pasará por parámetro tanto la IP en la que está alojado el servidor como el puerto.
+>Es importante llamar a la función Init, donde se pasará por parámetro tanto la IP en la que está alojado el servidor como el puerto.
 
 [sistema de matchmaking]: https://github.com/HoracioStudios/Matchmaking-Server
 
