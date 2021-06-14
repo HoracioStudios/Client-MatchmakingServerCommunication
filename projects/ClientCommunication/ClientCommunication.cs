@@ -25,7 +25,7 @@ public class ClientCommunication
     }
 
     //Devuelve el id del usuario
-    public static ServerMessage LogIn(string password, string username, string version = "1.0.0")
+    public static ServerMessage LogIn(string password, string username, string version)
     {
         string url = URL + "/accounts/sessions";
 
@@ -454,6 +454,103 @@ public class ClientCommunication
 
                 return message;
             }
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    //id1: id de este jugador id2: id del rival
+    public static ServerMessage FindServerInfo(int id1, int id2)
+    {
+        string url = URL_GAME + "/game-instances";
+
+        Identifiers IDs = new Identifiers();
+        IDs.ID1 = id1;
+        IDs.ID2 = id2;
+        string json = JsonConvert.SerializeObject(IDs);
+
+        int code;
+
+        try
+        {
+            var reply = Post(json, url, out code);
+            //var reply = Post(json, url, out code, out message);
+
+            if (code != 200)
+            {
+                REST_Error message = new REST_Error();
+
+                if (code < 0)
+                    message.message = "Error de socket, no se puede abrir una conexión";
+                else
+                {
+                    try
+                    {
+                        message = JsonConvert.DeserializeObject<REST_Error>(reply);
+                    }
+                    catch (Exception e)
+                    {
+                        message.message = reply;
+                    }
+                }
+
+                message.code = code;
+
+                return message;
+            }
+            else
+            {
+                ServerMatchInfo message = new ServerMatchInfo();
+
+                message = JsonConvert.DeserializeObject<ServerMatchInfo>(reply);
+
+                message.code = code;
+
+                return message;
+            }
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public static ServerMessage FinishMatch(int id1, int id2)
+    {
+        string url = URL_GAME + "/game-instances";
+
+        Identifiers IDs = new Identifiers();
+        IDs.ID1 = id1;
+        IDs.ID2 = id2;
+        string json = JsonConvert.SerializeObject(IDs);
+
+        int code;
+
+        try
+        {
+            var reply = Delete(json, url, out code);
+            //var reply = Post(json, url, out code, out message);
+            REST_Error message = new REST_Error();
+
+            if (code < 0)
+                message.message = "Error de socket, no se puede abrir una conexión";
+            else if (code != 200)
+            {
+                try
+                {
+                    message = JsonConvert.DeserializeObject<REST_Error>(reply);
+                }
+                catch (Exception e)
+                {
+                    message.message = reply;
+                }
+            }
+
+            message.code = code;
+
+            return message;
         }
         catch (Exception e)
         {
