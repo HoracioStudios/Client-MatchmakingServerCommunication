@@ -16,6 +16,12 @@ public class ClientCommunication
     static string authToken = "";
     static string refreshToken = "";
 
+
+    /// <summary>
+    /// Inicializa la ip y el puerto con el que se va a conectar el cliente
+    /// </summary>
+    /// <param name="IP_"> IP de conexión </param>
+    /// <param name="PORT_"> puerto de conexión </param>
     public static void Init(string IP_, string PORT_)
     {
         IP = IP_;
@@ -24,7 +30,14 @@ public class ClientCommunication
         URL_GAME = "http://" + IP + ":" + PORT_GAME_SERVER;
     }
 
-    //Devuelve el id del usuario
+    /// <summary>
+    /// Inicia la sesión de un usuario en el servidor de matchmaking
+    /// </summary>
+    /// <param name="password"> contraseña (a poder ser encriptada) del usuario con el que se registró </param>
+    /// <param name="username"> nombre del usuario con el que se registró </param>
+    /// <param name="version"> versión en la que se encuentra el sistema. 1.0.0 por defecto </param>
+    /// <returns> Devuelve un ServerMessage con posibilidad de casteo a Login. Casteo a REST_Error si el 
+    /// código devuelto es distinto de 200 </returns>
     public static ServerMessage LogIn(string password, string username, string version)
     {
         string url = URL + "/accounts/sessions";
@@ -85,7 +98,10 @@ public class ClientCommunication
         }
     }
 
-    //Devuelve el id del usuario
+    /// <summary>
+    /// Desconecta al usuario del servidor de matchmaking
+    /// </summary>
+    /// <returns> Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage LogOut()
     {
         string url = URL + "/accounts/sessions";
@@ -126,6 +142,13 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Registra a un usuario en el servidor de matchmaking
+    /// </summary>
+    /// <param name="password"> Contraseña del usuario (a ser posible encriptada)</param>
+    /// <param name="username"> Nick con el que se registra el usuario. Solo un usuario por nick</param>
+    /// <param name="email"> Email de registro del usuario. Solo un usuario por email</param>
+    /// <returns>Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage SignIn(string password, string username, string email)
     {
         string url = URL + "/accounts";
@@ -169,7 +192,13 @@ public class ClientCommunication
         }
     }
 
-    // 1 si esta disponible 0 si no lo esta
+
+    /// <summary>
+    /// Comprueba si el nick o el email no han sido utilizados ya
+    /// </summary>
+    /// <param name="nick"> Nick a comprobar </param>
+    /// <param name="email"> Email a comprobar </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a Available. Si el código es distinto a 200 es posible un casteo a REST_Error </returns>
     public static ServerMessage GetAvailable(string nick = "", string email = "")
     {
         string url = URL + "/accounts/check-availability/?";
@@ -231,6 +260,11 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Envío de datos necesarios para el servidor de amtchmaking
+    /// </summary>
+    /// <param name="gameData"> Clase con los datos necesarios </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage SendRoundInfo(GameData gameData)
     {
         string url = URL + "/accounts/rounds";
@@ -273,6 +307,10 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Añade al usuario a la cola de matchmaking para inciar la busqueda
+    /// </summary>
+    /// <returns> Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage AddToQueue()
     {
         string url = URL + "/matchmaking";
@@ -314,6 +352,11 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Busqueda del rival para una partida mas nivelada posible
+    /// </summary>
+    /// <param name="waitTime"> Tiempo que lleva el usuario buscando contrincante </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a PairSearch. Si el código es distinto a 200 es posible un casteo a REST_Error  </returns>
     public static ServerMessage SearchPair(float waitTime)
     {
         string url = URL + "/matchmaking/?waitTime=" + waitTime;
@@ -364,6 +407,10 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Saca al usuario de la cola de busqueda
+    /// </summary>
+    /// <returns> Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage LeaveQueue()
     {
         string url = URL + "/matchmaking";
@@ -405,6 +452,10 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Genera un nuevo accessToken
+    /// </summary>
+    /// <returns> Devuelve un ServerMessage con casteo posible a RefreshMessage. Si el código es distinto a 200 es posible un casteo a REST_Error </returns>
     public static ServerMessage Refresh()
     {
         string url = URL + "/accounts/sessions/refresh";
@@ -461,7 +512,12 @@ public class ClientCommunication
         }
     }
 
-    //id1: id de este jugador id2: id del rival
+    /// <summary>
+    /// Busca un servidor de juego al que conectarse
+    /// </summary>
+    /// <param name="id1"> ID del usuario </param>
+    /// <param name="id2"> ID del rival </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a ServerMatchInfo. Si el código es distinto a 200 es posible un casteo a REST_Error </returns>
     public static ServerMessage FindServerInfo(int id1, int id2)
     {
         string url = URL_GAME + "/game-instances";
@@ -517,6 +573,12 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Finaliza el servidor al que estaba conectado el usuario
+    /// </summary>
+    /// <param name="id1"> ID del usuario </param>
+    /// <param name="id2"> ID del rival </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a REST_Error si el código es distinto a 200 </returns>
     public static ServerMessage FinishMatch(int id1, int id2)
     {
         string url = URL_GAME + "/game-instances";
@@ -558,6 +620,11 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Obtiene la información del usuario
+    /// </summary>
+    /// <param name="id"> ID del usuario </param>
+    /// <returns> Devuelve un ServerMessage con casteo posible a UserDataSmall. Si el código es distinto a 200 es posible un casteo a REST_Error  </returns>
     public static ServerMessage GetInfo(int id)
     {
         string url = URL + "/accounts/by-id/" + id;
@@ -608,6 +675,12 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Maneja la conexión con el servidor
+    /// </summary>
+    /// <param name="request"> Tipo de request </param>
+    /// <param name="code"> Código de salida </param>
+    /// <returns> Devuelve el string recivido por el servidor de matchmaking. Esta en formato JSON </returns>
     private static string HandleRequest(HttpWebRequest request, out int code)
     {
         try
@@ -656,6 +729,14 @@ public class ClientCommunication
         }
     }
 
+    /// <summary>
+    /// Envio de tipo POST
+    /// </summary>
+    /// <param name="json"> JSON que se va a enviar </param>
+    /// <param name="url"> Url al que se le va a enviar </param>
+    /// <param name="code"> Código de respuesta </param>
+    /// <param name="useAuth"> Añade el header de autenticación </param>
+    /// <returns> Devuelve el string enviado desde el servidor de matchmaking </returns>
     private static string Post(string json, string url, out int code, bool useAuth = false)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -684,6 +765,13 @@ public class ClientCommunication
         return HandleRequest(request, out code);
     }
 
+    /// <summary>
+    /// Envio de tipo GET
+    /// </summary>
+    /// <param name="url"> Url al que se le va a enviar </param>
+    /// <param name="code"> Código de respuesta </param>
+    /// <param name="useAuth"> Añade el header de autenticación </param>
+    /// <returns> Devuelve el string enviado desde el servidor de matchmaking </returns>
     private static string Get(string url, out int code, bool useAuth = false)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -698,6 +786,14 @@ public class ClientCommunication
         return HandleRequest(request, out code);
     }
 
+    /// <summary>
+    /// Envio de tipo DELETE
+    /// </summary>
+    /// <param name="json"> JSON que se va a enviar </param>
+    /// <param name="url"> Url al que se le va a enviar </param>
+    /// <param name="code"> Código de respuesta </param>
+    /// <param name="useAuth"> Añade el header de autenticación </param>
+    /// <returns> Devuelve el string enviado desde el servidor de matchmaking </returns>
     private static string Delete(string json, string url, out int code, bool useAuth = false)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
